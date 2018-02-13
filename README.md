@@ -14,10 +14,10 @@ Sample usage:
 ```
 migrate_p4_to_github //OPSC_Gold/rte dev 1.1.5.12_OZ106871 /data/asiemion/gittests/repos/GOLD-RTE-rte
 ```
--*param 1:* perforce repository prefix
--*param 2:* rel|dev (according to naming convention
--*param 3:* release number
--*param 4:* cloned github repo location on the local disk
+- *param 1:* perforce repository prefix
+- *param 2:* rel|dev (according to naming convention
+- *param 3:* release number
+- *param 4:* cloned github repo location on the local disk
 
 You have to edit the script before the first usage to set the variables.
 
