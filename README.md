@@ -28,7 +28,7 @@ Please note that tool will create configuration file & commit it to given reposi
 
 Right now known issues have to be solved by manually editing workspace configuration file. Any improvements welcome!
 
-### does not handle file renaming during translation 
+### 1. Does not handle file renaming during translation 
 File names left as original ones, for example for clientview:
 ```
         //Component/common/apache/apache-2.0.63/build/httpd-2.0.63-x86_64-unknown-linux-gnu-.* //REL_OPSC_Gold_AddOn_dcd_rel_R2.3.2.0.1_MPestka/Component/apache/apache_Linux_2.6.18.*
@@ -53,7 +53,7 @@ proper mapping should be:
   }
 ```
 
-### import from multiple branches improperly merged
+### 2. Import from multiple branches improperly merged
 for example:
 ```
         //Component/qa/RessourceKit/rel/R1.1.9/... //REL_OPSC_Gold_AddOn_dcd_rel_R2.1.2_MPestka/OTS/RessourceKit/...
