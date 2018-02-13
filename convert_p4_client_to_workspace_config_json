@@ -1,0 +1,152 @@
+#!/bin/bash
+
+# egrep '^GOLD,' ~/Downloads/Redknee\ GitHub\ Migration\ -\ Ordering.csv | cut -d, -f3,7 | tr -d ' ' | sed 's%/,%,%'
+
+test $# -ne 2 && echo "Usage: $0 <perforce repository> <github repository mapping>" && exit 1
+
+repo="${1}/"
+repomapping=$2
+
+p4 client -o | egrep '^\s*//' | while read map; do
+  from=$(echo $map|awk '{print $1}')
+  to=$(echo $map|awk '{print $2}'|cut -d/ -f4-|sed 's%/\.\.\.%%')
+
+  if [[ $from = *"*"* ]]; then
+    to_dir=$(dirname "/$to" | cut -c2-)
+    p4 files $from | cut -d# -f1 | while read from_expanded; do
+      to_path="${to_dir}${to_dir:+/}$(basename $from_expanded)"
+      echo "${from_expanded} ${to_path}"
+    done
+  else
+    echo "${from} ${to}"
+  fi
+done | while read map; do
+  from=$(echo $map|awk '{print $1}')
+  to=$(echo $map|awk '{print $2}')
+
+  if [[ $from = "$repo"* ]]; then
+    from_without_dots=$(echo ${from:${#repo}}|sed 's%/\.\.\.%%')
+    if [ "$from_without_dots" == "$to" ]; then
+      continue
+    fi
+  fi
+  echo "$from $to"
+done | sort | while read map; do
+  from=$(echo $map|awk '{print $1}')
+  to=$(echo $map|awk '{print $2}')
+
+  maxlen=0
+  found_gh=""
+  found_p4=""
+  while read repomappings; do
+    p4=$(echo $repomappings|cut -d, -f1)
+    gh=$(echo $repomappings|cut -d, -f2)
+    if [ "$from" != "${from/$p4/}" ]; then
+      if [ ${#p4} -gt $maxlen ]; then
+        found_gh=$gh
+        found_p4=$p4
+        maxlen=${#p4}
+      fi
+    fi
+  done < $repomapping
+  if [ -z "$found_gh" ]; then
+    echo "Could not find a github repo for $from"
+    exit 2
+  fi
+  echo "$from $to $found_p4 $found_gh"
+done | while read map; do
+  from=$(echo $map|awk '{print $1}')
+  to=$(echo $map|awk '{print $2}')
+  found_p4=$(echo $map|awk '{print $3}')
+  found_gh=$(echo $map|awk '{print $4}')
+
+  from_without_repo=${from:$((${#found_p4} + 1))}
+  branch="master"
+  path="$from_without_repo"
+  if [[ $from_without_repo = "rel/"* ]]; then
+    branch="rel-$(echo $from_without_repo | cut -d\/ -f2)"
+    path=$(echo $from_without_repo | cut -d\/ -f3-)
+  elif [[ $from_without_repo = "dev"* ]]; then
+    branch="dev-$(echo $from_without_repo | cut -d\/ -f2)"
+    path=$(echo $from_without_repo | cut -d\/ -f3-)
+  fi
+  echo "$found_gh $branch $path $to"
+done | while read map; do
+  gh=$(echo $map|awk '{print $1}')
+  branch=$(echo $map|awk '{print $2}')
+  path=$(echo $map|awk '{print $3}')
+  to=$(echo $map|awk '{print $4}')
+
+  if [ "$gh" = "GOLD-JavaDev-sun-j2ee" ]; then
+    branch="sun-j2ee-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-log4j" ]; then
+    branch="log4j-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-junit" ]; then
+    branch="junit-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-jboss" ]; then
+    branch="jboss-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-eclipse" ]; then
+    branch="eclipse-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-ant" ]; then
+    branch="ant-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-oracle" ]; then
+    branch="oracle-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-oracle-jdbc" ]; then
+    branch="oracle-jdbc-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-slf4j" ]; then
+    branch="slf4j-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-OpenSource-subversion" ]; then
+    branch="subversion-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-junitperf" ]; then
+    branch="junitperf-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-common-system_messages" ]; then
+    branch="rel"
+  fi
+
+  echo "$gh $branch $path $to"
+done | while read map; do
+  gh=$(echo $map|awk '{print $1}')
+  branch=$(echo $map|awk '{print $2}')
+  path=$(echo $map|awk '{print $3}')
+  to=$(echo $map|awk '{print $4}')
+
+  if [ -z "$prevrepo" ]; then
+    echo "["
+  fi
+  if [ "$gh" != "$prevrepo" ]; then
+    if [ -n "$prevrepo" ]; then
+      echo ""
+      echo "    }"
+      echo "  },"
+    fi
+    prevrepo="$gh"
+    echo "  {"
+    echo "    \"repo\": \"$prevrepo\","
+    echo "    \"branch\": \"$branch\","
+    echo "    \"tag\": null,"
+    echo "    \"mappings\": {"
+    if [ "$gh" = "GOLD-common-sys" -a ${repo:0:15} = "//OPSC_Gold/rte" ]; then
+      echo  "      \"goldcommon/etc/make_include/Makefile.std\": \"addon_common/Makefile\","
+    fi
+    echo -n "      \"$path\": \"$to\""
+  else
+    echo ","
+    echo -n "      \"$path\": \"$to\""
+  fi 
+done
+
+echo ""
+echo "    }"
+echo "  }"
+echo "]"

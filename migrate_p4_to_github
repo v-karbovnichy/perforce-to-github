@@ -1,0 +1,23 @@
+#!/bin/bash -xe
+
+test $# -ne 4 && echo "Usage: $0 <p4_prefix> <dev|rel> <release> <git_dir>" && exit 1
+
+p4_prefix=$1
+dev_rel=$2
+release=$3
+git_dir=$4
+convert=~/bin/convert_p4_client_to_workspace_config_json
+workspace_config=workspace_configuration.json
+repo_mapping=~/bin/gold_gitrepos.csv
+p4_repo="${p4_prefix}/${dev_rel}/R${release}"
+
+#//OPSC_Gold/AddOn/Common/dev/R3.0.0_OZ106880
+
+p4_dir=`pwd`
+cd $git_dir
+( git checkout ${dev_rel}-R$release )
+cd $p4_dir
+$convert $p4_repo $repo_mapping > $git_dir/$workspace_config
+cd $git_dir
+git add $workspace_config
+git commit -m "added $workspace_config based on $release"
