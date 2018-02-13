@@ -14,15 +14,18 @@ migrate_p4_to_github //OPSC_Gold/rte 1.1.5.12_OZ106871 dev /data/asiemion/gittes
 You have to edit the script before the first usage to set the variables.
 
 
-### Known issues:
+## Known issues:
 
-# does not handle file renaming during translation 
+### does not handle file renaming during translation 
 File names left as original ones, for example for clientview:
+```
         //Component/common/apache/apache-2.0.63/build/httpd-2.0.63-x86_64-unknown-linux-gnu-.* //REL_OPSC_Gold_AddOn_dcd_rel_R2.3.2.0.1_MPestka/Component/apache/apache_Linux_2.6.18.*
         //Component/common/apache/apache-2.0.63/build/httpd-2.0.63-x86_64-Linux_RHEL_6.* //REL_OPSC_Gold_AddOn_dcd_rel_R2.3.2.0.1_MPestka/Component/apache/apache_Linux_RHEL_6.*
+```
 actual mapping will be incorrect as right-side file names will equal to left-side.
 
 proper mapping should be:
+```
   {
     "repo": "GOLD-common-apache",
     "branch": "master",
@@ -36,14 +39,16 @@ proper mapping should be:
       "apache-2.0.63/build/httpd-2.0.63-x86_64-unknown-linux-gnu-.tar.gz.md5": "Component/apache/apache_Linux_2.6.18.tar.gz.md5"
     }
   }
+```
 
-
-# import from multiple branches improperly merged
+### import from multiple branches improperly merged
 for example:
+```
         //Component/qa/RessourceKit/rel/R1.1.9/... //REL_OPSC_Gold_AddOn_dcd_rel_R2.1.2_MPestka/OTS/RessourceKit/...
         //Component/qa/RessourceKit/rel/R1.1.15/tools/sim_comlayer.c //REL_OPSC_Gold_AddOn_dcd_rel_R2.1.2_MPestka/OTS/RessourceKit/tools/sim_comlayer.c
+```
 actual mapping:
-
+```
   {
     "repo": "GOLD-Component-RessourceKit",
     "branch": "rel-R1.1.15",
@@ -53,9 +58,9 @@ actual mapping:
       "...": "OTS/RessourceKit"
     }
   }
-
+```
 proper mapping (split into 2 repos in right order):
-
+```
   {
     "repo": "GOLD-Component-RessourceKit",
     "branch": "rel-R1.1.9",
@@ -72,7 +77,7 @@ proper mapping (split into 2 repos in right order):
       "tools/sim_comlayer.c": "OTS/RessourceKit/tools/sim_comlayer.c"
     }
   }
-
+```
 
 
 
