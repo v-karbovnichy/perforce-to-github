@@ -19,6 +19,8 @@ You have to edit the script before the first usage to set the variables.
 
 ## Known issues:
 
+Right now known issues have to be solved by manually editing workspace configuration file. Any improvements welcome!
+
 ### does not handle file renaming during translation 
 File names left as original ones, for example for clientview:
 ```
