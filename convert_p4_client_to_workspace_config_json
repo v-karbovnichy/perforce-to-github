@@ -175,13 +175,14 @@ done | while read map; do
   if [ -z "$prevrepo" ]; then
     echo "["
   fi
-  if [ "$gh" != "$prevrepo" ]; then
+  if [ "$gh" != "$prevrepo" -o "$branch" != "$prevbranch" ]; then
     if [ -n "$prevrepo" ]; then
       echo ""
       echo "    }"
       echo "  },"
     fi
     prevrepo="$gh"
+    prevbranch="$branch"
     echo "  {"
     echo "    \"repo\": \"$prevrepo\","
     echo "    \"branch\": \"$branch\","
