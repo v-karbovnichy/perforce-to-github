@@ -621,3 +621,9 @@
 //Component/common/OpenSource/subversion,GOLD-OpenSource-subversion
 //Component/qa/staf,GOLD-Dev-Tools-staf
 //OPSC_Gold/3rdparty/jboss,GOLD-JavaDev-jboss
+//Component/common/JavaDev/dbunit,GOLD-JavaDev-dbunit
+//Component/common/JavaDev/emf-rt,GOLD-JavaDev-emf-rt
+//Component/common/JavaDev/getopt,GOLD-JavaDev-getopt
+//Component/common/JavaDev/izpack,GOLD-common-izpack
+//Component/common/JavaDev/jdom,GOLD-JavaDev-jdom
+//Component/common/JavaDev/sapia,GOLD-JavaDev-sapia
