@@ -349,7 +349,7 @@
 //Component/qa/olcsim,GOLD-Devtools-olcsim
 //Component/common/JAF/Utilities,GOLD-BAS-Utilities
 //PRD/blueprint/CDR_Generator_GUI,GOLD-Blueprint-CDR_Generator_GUI
-//Component/common/ORGA/opsc_gold_csclientapi,GOLD-BAS-opsc_gold_csclientapi
+//Component/common/ORGA/opsc_gold_csclientapi,GOLD-BAS-opsc_gold_csclientapi-ORGA
 //SI/CD/TPA/faf,GOLD-Integration-TPA-faf
 //COS/CustomerConfig/Tim/OPSC_Gold,GOLD-RTECustomerConfig?-OPSC_Gold
 //Component/common/ORGA/xml_lite,GOLD-common-xml_lite

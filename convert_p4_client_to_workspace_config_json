@@ -80,6 +80,15 @@ done | while read map; do
   if [ "$gh" = "GOLD-JavaDev-sun-j2ee" ]; then
     branch="sun-j2ee-$(echo $path | cut -d\/ -f1)"
     path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-dbunit" ]; then
+    branch="$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-emf-rt" ]; then
+    branch="$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-JavaDev-getopt" ]; then
+    branch="$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
   elif [ "$gh" = "GOLD-JavaDev-log4j" ]; then
     branch="log4j-$(echo $path | cut -d\/ -f1)"
     path=$(echo $path | cut -d\/ -f2-)
