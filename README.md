@@ -53,43 +53,6 @@ proper mapping should be:
   }
 ```
 
-### 2. Import from multiple branches improperly merged
-for example:
-```
-        //Component/qa/RessourceKit/rel/R1.1.9/... //REL_OPSC_Gold_AddOn_dcd_rel_R2.1.2_MPestka/OTS/RessourceKit/...
-        //Component/qa/RessourceKit/rel/R1.1.15/tools/sim_comlayer.c //REL_OPSC_Gold_AddOn_dcd_rel_R2.1.2_MPestka/OTS/RessourceKit/tools/sim_comlayer.c
-```
-actual mapping:
-```
-  {
-    "repo": "GOLD-Component-RessourceKit",
-    "branch": "rel-R1.1.15",
-    "tag": null,
-    "mappings": {
-      "tools/sim_comlayer.c": "OTS/RessourceKit/tools/sim_comlayer.c",
-      "...": "OTS/RessourceKit"
-    }
-  }
-```
-proper mapping (split into 2 repos in right order):
-```
-  {
-    "repo": "GOLD-Component-RessourceKit",
-    "branch": "rel-R1.1.9",
-    "tag": null,
-    "mappings": {
-      "...": "OTS/RessourceKit"
-    }
-  },
-  {
-    "repo": "GOLD-Component-RessourceKit",
-    "branch": "rel-R1.1.15",
-    "tag": null,
-    "mappings": {
-      "tools/sim_comlayer.c": "OTS/RessourceKit/tools/sim_comlayer.c"
-    }
-  }
-```
 
 
 
