@@ -16,9 +16,11 @@ p4 client -o | egrep '^\s*//' | while read map; do
     p4 files $from | cut -d# -f1 | while read from_expanded; do
       to_path="${to_dir}${to_dir:+/}$(basename $from_expanded)"
       echo "${from_expanded} ${to_path}"
+      echo "1    ${from_expanded} ${to_path}" >> /data/mpestka/log
     done
   else
     echo "${from} ${to}"
+    echo "1.1  ${from} ${to}" >> /data/mpestka/log
   fi
 done | while read map; do
   from=$(echo $map|awk '{print $1}')
@@ -31,9 +33,12 @@ done | while read map; do
     fi
   fi
   echo "$from $to"
+  echo "2    $from $to"  >> /data/mpestka/log
 done | sort | while read map; do
   from=$(echo $map|awk '{print $1}')
   to=$(echo $map|awk '{print $2}')
+
+echo "3.0  from=$from to=$to" >> /data/mpestka/log2
 
   maxlen=0
   found_gh=""
@@ -41,6 +46,7 @@ done | sort | while read map; do
   while read repomappings; do
     p4=$(echo $repomappings|cut -d, -f1)
     gh=$(echo $repomappings|cut -d, -f2)
+echo "REPO: from='$from', p4='$p4', gh='$gh'" >> /data/mpestka/log 
     if [ "$from" != "${from/$p4/}" ]; then
       if [ ${#p4} -gt $maxlen ]; then
         found_gh=$gh
@@ -54,6 +60,7 @@ done | sort | while read map; do
     exit 2
   fi
   echo "$from $to $found_p4 $found_gh"
+  echo "3    $from $to $found_p4 $found_gh" >> /data/mpestka/log
 done | while read map; do
   from=$(echo $map|awk '{print $1}')
   to=$(echo $map|awk '{print $2}')
@@ -71,6 +78,7 @@ done | while read map; do
     path=$(echo $from_without_repo | cut -d\/ -f3-)
   fi
   echo "$found_gh $branch $path $to"
+  echo "4    $found_gh $branch $path $to" >> /data/mpestka/log
 done | while read map; do
   gh=$(echo $map|awk '{print $1}')
   branch=$(echo $map|awk '{print $2}')
@@ -79,6 +87,9 @@ done | while read map; do
 
   if [ "$gh" = "GOLD-JavaDev-sun-j2ee" ]; then
     branch="sun-j2ee-$(echo $path | cut -d\/ -f1)"
+    path=$(echo $path | cut -d\/ -f2-)
+  elif [ "$gh" = "GOLD-common-j2sdk" ]; then
+    branch="$(echo $path | cut -d\/ -f1)"
     path=$(echo $path | cut -d\/ -f2-)
   elif [ "$gh" = "GOLD-JavaDev-dbunit" ]; then
     branch="$(echo $path | cut -d\/ -f1)"
@@ -175,6 +186,7 @@ done | while read map; do
   fi
 
   echo "$gh $branch $path $to"
+  echo "5    $gh $branch $path $to" >> /data/mpestka/log
 done | while read map; do
   gh=$(echo $map|awk '{print $1}')
   branch=$(echo $map|awk '{print $2}')

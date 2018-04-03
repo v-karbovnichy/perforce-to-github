@@ -620,7 +620,7 @@
 //Component/common/JavaDev/shrinkwrap-descriptors,GOLD-JavaDev-shrinkwrap-descriptors
 //Component/common/OpenSource/subversion,GOLD-OpenSource-subversion
 //Component/qa/staf,GOLD-Dev-Tools-staf
-//OPSC_Gold/3rdparty/jboss,GOLD-JavaDev-jboss
+//OPSC_Gold/3rdparty/jboss,GOLD-JavaDev-3rdparty_jboss
 //Component/common/JavaDev/dbunit,GOLD-JavaDev-dbunit
 //Component/common/JavaDev/emf-rt,GOLD-JavaDev-emf-rt
 //Component/common/JavaDev/getopt,GOLD-JavaDev-getopt
