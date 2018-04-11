@@ -7,7 +7,7 @@ test $# -ne 2 && echo "Usage: $0 <perforce repository> <github repository mappin
 repo="${1}/"
 repomapping=$2
 
-p4 client -o | egrep '^\s*//' | while read map; do
+p4 client -o | egrep '^\s*[+-]*//' | while read map; do
   from=$(echo $map|awk '{print $1}')
   to=$(echo $map|awk '{print $2}'|cut -d/ -f4-|sed 's%/\.\.\.%%')
 
@@ -60,6 +60,9 @@ done | while read map; do
   found_p4=$(echo $map|awk '{print $3}')
   found_gh=$(echo $map|awk '{print $4}')
 
+  mode=$(echo $from | sed 's:^//:*//:' | cut -c 1)
+  from=$(echo $from | sed 's:[+-]*//://:' )
+  
   from_without_repo=${from:$((${#found_p4} + 1))}
   branch="master"
   path="$from_without_repo"
@@ -70,12 +73,13 @@ done | while read map; do
     branch="dev-$(echo $from_without_repo | cut -d\/ -f2)"
     path=$(echo $from_without_repo | cut -d\/ -f3-)
   fi
-  echo "$found_gh $branch $path $to"
+  echo "$found_gh $branch $path $to \"$mode\""
 done | while read map; do
   gh=$(echo $map|awk '{print $1}')
   branch=$(echo $map|awk '{print $2}')
   path=$(echo $map|awk '{print $3}')
   to=$(echo $map|awk '{print $4}')
+  mode=$(echo $map|awk '{print $5}')
 
   if [ "$gh" = "GOLD-JavaDev-sun-j2ee" ]; then
     branch="sun-j2ee-$(echo $path | cut -d\/ -f1)"
@@ -177,12 +181,13 @@ done | while read map; do
     branch="rel"
   fi
 
-  echo "$gh $branch $path $to"
+  echo "$gh $branch $path $to $mode"
 done | while read map; do
   gh=$(echo $map|awk '{print $1}')
   branch=$(echo $map|awk '{print $2}')
   path=$(echo $map|awk '{print $3}')
   to=$(echo $map|awk '{print $4}')
+  mode=$(echo $map|awk '{print $5}' | sed 's:"::g' | sed 's:^[*+]*$::' )
 
   if [ -z "$prevrepo" ]; then
     echo "["
@@ -203,10 +208,10 @@ done | while read map; do
     if [ "$gh" = "GOLD-common-sys" -a ${repo:0:15} = "//OPSC_Gold/rte" ]; then
       echo  "      \"goldcommon/etc/make_include/Makefile.std\": \"addon_common/Makefile\","
     fi
-    echo -n "      \"$path\": \"$to\""
+    echo -n "      \"$mode$path\": \"$to\""
   else
     echo ","
-    echo -n "      \"$path\": \"$to\""
+    echo -n "      \"$mode$path\": \"$to\""
   fi 
 done
 
