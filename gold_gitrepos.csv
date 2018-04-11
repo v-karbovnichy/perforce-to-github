@@ -226,7 +226,7 @@
 //Component/common/ORGA/oslee/monitor,GOLD-Monitoring-monitor
 //Component/common/ORGA/oslee/psc,GOLD-BSG-psc
 //Component/network/tmif,GOLD-network-tmif
-//Component/common/ORGA/opsc_gold_addonrvclientapi,GOLD-BAS-opsc_gold_addonrvclientapi
+//Component/common/ORGA/opsc_gold_addonrvclientapi,GOLD-BAS-opsc_gold_addonrvclientapi-Gold
 //ORGA/rmgmt/django/rmsite,GOLD-Devtools-rmsite
 //OPSC_Gold/AddOn/MonitorGUI,GOLD-Monitoring-MonitorGUI
 //Component/common/ORGA/oslee/batch,GOLD-BSG-batch
@@ -283,7 +283,7 @@
 //COS/Scripts/CS.SUP.2LSS,GOLD-Integration-CS.SUP.2LSS
 //PRD/AssessmentTool,GOLD-Blueprint-AssessmentTool
 //SI/CD/TUR/ASN1,GOLD-Integration-ASN1
-//Component/common/Gold/opsc_gold_addonrvclientapi,GOLD-BAS-opsc_gold_addonrvclientapi-ORGA
+//Component/common/Gold/opsc_gold_addonrvclientapi,GOLD-BAS-opsc_gold_addonrvclientapi-Gold
 //Component/common/Gold/opsc_gold_cs_model,GOLD-BAS-opsc_gold_cs_model
 //SCP/lic_astelit,GOLD-SCP-lic_astelit
 //Component/common/Gold/JAF_LdapSecurity,GOLD-BAS-JAF_LdapSecurity
@@ -349,7 +349,7 @@
 //Component/qa/olcsim,GOLD-Devtools-olcsim
 //Component/common/JAF/Utilities,GOLD-BAS-Utilities
 //PRD/blueprint/CDR_Generator_GUI,GOLD-Blueprint-CDR_Generator_GUI
-//Component/common/ORGA/opsc_gold_csclientapi,GOLD-BAS-opsc_gold_csclientapi-ORGA
+//Component/common/ORGA/opsc_gold_csclientapi,GOLD-BAS-opsc_gold_csclientapi
 //SI/CD/TPA/faf,GOLD-Integration-TPA-faf
 //COS/CustomerConfig/Tim/OPSC_Gold,GOLD-RTECustomerConfig?-OPSC_Gold
 //Component/common/ORGA/xml_lite,GOLD-common-xml_lite
