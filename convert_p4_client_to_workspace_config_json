@@ -31,7 +31,7 @@ done | while read map; do
     fi
   fi
   echo "$from $to"
-done | sort | while read map; do
+done | while read map; do
   from=$(echo $map|awk '{print $1}')
   to=$(echo $map|awk '{print $2}')
 
